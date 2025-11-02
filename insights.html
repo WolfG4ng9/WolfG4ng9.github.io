@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WolfG4ng9 | Insights</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0e27;
+            --bg-card: #1a1f3a;
+            --accent: #00ff88;
+            --accent-secondary: #ff0055;
+            --text: #e0e0e0;
+            --text-dim: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-card) 100%);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .logo {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: var(--text-dim);
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid var(--accent);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
+            transform: translateY(-2px);
+        }
+
+        nav a.active {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .page-title {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-desc {
+            font-size: 1.2em;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .insight-card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 30px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .insight-tag {
+            display: inline-block;
+            background: rgba(255, 0, 85, 0.1);
+            color: var(--accent-secondary);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-right: 10px;
+            margin-bottom: 15px;
+        }
+
+        .insight-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        .insight-desc {
+            color: var(--text-dim);
+            margin-bottom: 20px;
+        }
+
+        .insight-date {
+            color: var(--text-dim);
+            font-size: 0.9em;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 10px;
+            border: 2px solid var(--accent);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2em;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--accent-secondary);
+        }
+
+        .insight-full {
+            margin-top: 30px;
+        }
+
+        .insight-full h3 {
+            color: var(--accent);
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .insight-full p {
+            margin-bottom: 15px;
+        }
+
+        .insight-full ul, .insight-full ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .insight-full li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            color: var(--text-dim);
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2em;
+            }
+            
+            .page-title {
+                font-size: 2em;
+            }
+            
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">WolfG4ng9</div>
+        <p class="tagline">Cybersecurity Researcher | CTF Player | Bug Hunter</p>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="writeups.html">Writeups</a>
+            <a href="insights.html" class="active">Insights</a>
+            <a href="tools.html">Tools</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Security Insights</h1>
+            <p class="page-desc">Thoughts, tips, and lessons learned from my journey in cybersecurity research and CTF challenges.</p>
+        </div>
+
+        <div class="insights-grid">
+            <div class="insight-card" onclick="openInsight('getting-started')">
+                <span class="insight-tag">General</span>
+                <span class="insight-tag">Tips</span>
+                <h3 class="insight-title">Getting Started with Bug Bounties</h3>
+                <p class="insight-desc">My approach to starting in bug bounty hunting and what I've learned along the way...</p>
+                <p class="insight-date">November 2, 2025</p>
+            </div>
+
+            <div class="insight-card" onclick="openInsight('logic-flaws')">
+                <span class="insight-tag">Web Security</span>
+                <h3 class="insight-title">Why Logic Flaws Are Everywhere</h3>
+                <p class="insight-desc">Understanding why business logic vulnerabilities are so common and how to find them...</p>
+                <p class="insight-date">November 2, 2025</p>
+            </div>
+
+            <!-- Add more insight cards here -->
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 WolfG4ng9. Built with passion for security research.</p>
+    </footer>
+
+    <!-- Modal for full insight -->
+    <div id="insight-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeInsight()">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        const insights = {
+            'getting-started': {
+                title: 'Getting Started with Bug Bounties',
+                tags: ['General', 'Tips'],
+                date: 'November 2, 2025',
+                content: `
+                    <h3>Introduction</h3>
+                    <p>Starting in bug bounty hunting can be overwhelming. Here's what I wish I knew when I started...</p>
+
+                    <h3>Key Lessons</h3>
+                    <ul>
+                        <li><strong>Start with CTFs:</strong> They teach you the fundamentals without the pressure of finding real bugs</li>
+                        <li><strong>Learn the basics first:</strong> Understanding HTTP, web technologies, and common vulnerabilities is crucial</li>
+                        <li><strong>Read other writeups:</strong> Learn from how others approach problems</li>
+                        <li><strong>Don't give up:</strong> It takes time to find your first bug</li>
+                    </ul>
+
+                    <h3>Recommended Learning Path</h3>
+                    <ol>
+                        <li>Learn web fundamentals (HTML, JavaScript, HTTP)</li>
+                        <li>Study OWASP Top 10 vulnerabilities</li>
+                        <li>Practice on CTF platforms (HackTheBox, TryHackMe)</li>
+                        <li>Start with easier bug bounty programs</li>
+                        <li>Document everything you learn</li>
+                    </ol>
+
+                    <h3>My Favorite Resources</h3>
+                    <ul>
+                        <li>PortSwigger Web Security Academy</li>
+                        <li>OWASP documentation</li>
+                        <li>YouTube channels (NahamSec, STÖK, InsiderPhD)</li>
+                        <li>Twitter security community</li>
+                    </ul>
+                `
+            },
+            'logic-flaws': {
+                title: 'Why Logic Flaws Are Everywhere',
+                tags: ['Web Security', 'Logic Flaws'],
+                date: 'November 2, 2025',
+                content: `
+                    <h3>What Are Logic Flaws?</h3>
+                    <p>Logic flaws occur when an application's business logic can be exploited to perform unintended actions. Unlike technical vulnerabilities like SQL injection, these bugs exploit the application's intended functionality.</p>
+
+                    <h3>Why They're So Common</h3>
+                    <ul>
+                        <li><strong>Complex business requirements:</strong> The more complex the logic, the more room for errors</li>
+                        <li><strong>Trust in client-side data:</strong> Developers often trust data from users</li>
+                        <li><strong>Lack of validation:</strong> Missing server-side checks on critical operations</li>
+                        <li><strong>Race conditions:</strong> Not accounting for concurrent requests</li>
+                    </ul>
+
+                    <h3>Common Examples</h3>
+                    <ul>
+                        <li>Price manipulation in e-commerce</li>
+                        <li>Discount code abuse</li>
+                        <li>Account takeover through registration flows</li>
+                        <li>IDOR (accessing other users' data)</li>
+                        <li>Payment bypass</li>
+                    </ul>
+
+                    <h3>How to Find Them</h3>
+                    <p>Think like an attacker:</p>
+                    <ul>
+                        <li>What can I control? (Parameters, headers, cookies)</li>
+                        <li>What validation is missing?</li>
+                        <li>Can I skip steps in a process?</li>
+                        <li>What happens with edge cases? (negative numbers, zero, huge values)</li>
+                        <li>Can I access other users' resources?</li>
+                    </ul>
+                `
+            }
+        };
+
+        function openInsight(id) {
+            const insight = insights[id];
+            if (!insight) return;
+
+            const modal = document.getElementById('insight-modal');
+            const modalBody = document.getElementById('modal-body');
+
+            modalBody.innerHTML = `
+                <h2 style="color: var(--accent);">${insight.title}</h2>
+                <p style="color: var(--text-dim); margin-bottom: 20px;">${insight.date}</p>
+                <div style="margin-bottom: 20px;">
+                    ${insight.tags.map(tag => `<span class="insight-tag">${tag}</span>`).join('')}
+                </div>
+                <div class="insight-full">
+                    ${insight.content}
+                </div>
+            `;
+
+            modal.style.display = 'block';
+        }
+
+        function closeInsight() {
+            document.getElementById('insight-modal').style.display = 'none';
+        }
+
+        window.onclick = function(e) {
+            const modal = document.getElementById('insight-modal');
+            if (e.target === modal) {
+                closeInsight();
+            }
+        }
+    </script>
+</body>
+</html>

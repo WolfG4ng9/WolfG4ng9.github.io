@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WolfG4ng9 | Writeups</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0e27;
+            --bg-card: #1a1f3a;
+            --accent: #00ff88;
+            --accent-secondary: #ff0055;
+            --text: #e0e0e0;
+            --text-dim: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-card) 100%);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .logo {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: var(--text-dim);
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid var(--accent);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
+            transform: translateY(-2px);
+        }
+
+        nav a.active {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .page-title {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-desc {
+            font-size: 1.2em;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border-color: var(--accent);
+        }
+
+        .writeups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .writeup-card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 30px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .writeup-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .writeup-tag {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-right: 10px;
+            margin-bottom: 15px;
+        }
+
+        .writeup-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        .writeup-desc {
+            color: var(--text-dim);
+            margin-bottom: 20px;
+        }
+
+        .writeup-date {
+            color: var(--text-dim);
+            font-size: 0.9em;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 10px;
+            border: 2px solid var(--accent);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2em;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--accent-secondary);
+        }
+
+        .writeup-full {
+            margin-top: 30px;
+        }
+
+        .writeup-full h3 {
+            color: var(--accent);
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .writeup-full code {
+            background: var(--bg-dark);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--accent);
+        }
+
+        .writeup-full pre {
+            background: var(--bg-dark);
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .writeup-full ul, .writeup-full ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .writeup-full li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            color: var(--text-dim);
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2em;
+            }
+            
+            .page-title {
+                font-size: 2em;
+            }
+            
+            .writeups-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">WolfG4ng9</div>
+        <p class="tagline">Cybersecurity Researcher | CTF Player | Bug Hunter</p>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="writeups.html" class="active">Writeups</a>
+            <a href="insights.html">Insights</a>
+            <a href="tools.html">Tools</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">CTF Writeups</h1>
+            <p class="page-desc">Detailed documentation of challenges I've solved, vulnerabilities discovered, and techniques used.</p>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterWriteups('all')">All</button>
+            <button class="filter-btn" onclick="filterWriteups('web')">Web</button>
+            <button class="filter-btn" onclick="filterWriteups('pwn')">Pwn</button>
+            <button class="filter-btn" onclick="filterWriteups('crypto')">Crypto</button>
+            <button class="filter-btn" onclick="filterWriteups('forensics')">Forensics</button>
+        </div>
+
+        <div class="writeups-grid" id="writeups-container">
+            <div class="writeup-card" data-category="web" onclick="openWriteup('pizza-logic')">
+                <span class="writeup-tag">Web</span>
+                <span class="writeup-tag">Logic Flaw</span>
+                <h3 class="writeup-title">Pizza Service - Broken Logic</h3>
+                <p class="writeup-desc">Exploiting client-side price manipulation in a pizza ordering application through request interception.</p>
+                <p class="writeup-date">November 2, 2025</p>
+            </div>
+
+            <!-- Add more writeup cards here as you solve challenges -->
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 WolfG4ng9. Built with passion for security research.</p>
+    </footer>
+
+    <!-- Modal for full writeup -->
+    <div id="writeup-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeWriteup()">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        const writeups = {
+            'pizza-logic': {
+                title: 'Pizza Service - Broken Logic Vulnerability',
+                tags: ['Web Security', 'Logic Flaw', 'Price Manipulation'],
+                date: 'November 2, 2025',
+                content: `
+                    <h3>Challenge Overview</h3>
+                    <p>A pizza ordering web application with features including:</p>
+                    <ul>
+                        <li>Add pizza to cart</li>
+                        <li>Custom pizza builder</li>
+                        <li>Checkout functionality</li>
+                        <li>Login and registration (no password reset)</li>
+                    </ul>
+                    <p><strong>Hint:</strong> "Broken Logic"</p>
+
+                    <h3>Vulnerability Discovery</h3>
+                    <p>The application suffered from a critical <strong>client-side price manipulation</strong> vulnerability. The server was trusting price data sent from the client during checkout.</p>
+
+                    <h3>Exploitation Steps</h3>
+                    <p><strong>1. Normal Order Flow:</strong></p>
+                    <ul>
+                        <li>Added pizza items to cart</li>
+                        <li>Proceeded to checkout</li>
+                        <li>Intercepted the checkout request with Burp Suite</li>
+                    </ul>
+
+                    <p><strong>2. Request Manipulation:</strong></p>
+                    <pre><code>POST /checkout HTTP/1.1
+Host: pizza-service.example.com
+Content-Type: application/json
+
+{
+  "items": [
+    {"id": 1, "name": "Pepperoni Pizza", "price": 0}
+  ],
+  "total": 0
+}</code></pre>
+
+                    <p><strong>3. Success:</strong></p>
+                    <p>Changed the price value from the original amount to <code>$0</code> in the intercepted request. The server accepted the modified price without validation and processed the order successfully.</p>
+
+                    <h3>Root Cause</h3>
+                    <p>The vulnerability existed because:</p>
+                    <ul>
+                        <li>Price calculations were performed client-side</li>
+                        <li>Server accepted price values from user-controlled input</li>
+                        <li>No server-side validation of prices against authoritative data</li>
+                        <li>Trust boundary violation (trusting client data)</li>
+                    </ul>
+
+                    <h3>Impact</h3>
+                    <p>An attacker could:</p>
+                    <ul>
+                        <li>Order any items for $0</li>
+                        <li>Set negative prices to gain credit</li>
+                        <li>Bypass payment mechanisms entirely</li>
+                        <li>Cause financial loss to the business</li>
+                    </ul>
+
+                    <h3>Remediation</h3>
+                    <p><strong>Proper Implementation:</strong></p>
+                    <pre><code>// Client sends only item IDs and quantities
+POST /checkout
+{
+  "items": [
+    {"item_id": 1, "quantity": 2}
+  ]
+}
+
+// Server calculates prices
+price = db.get_price(item_id) * quantity
+total = sum(all prices)
+process_payment(total)</code></pre>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Never trust client-side data for critical operations</li>
+                        <li>Always perform price calculations server-side</li>
+                        <li>Validate all user input against authoritative sources</li>
+                        <li>Implement proper authorization and validation layers</li>
+                    </ul>
+
+                    <h3>Tools Used</h3>
+                    <ul>
+                        <li>Burp Suite - Request interception and modification</li>
+                        <li>Browser DevTools - Initial reconnaissance</li>
+                    </ul>
+                `
+            }
+        };
+
+        function openWriteup(id) {
+            const writeup = writeups[id];
+            if (!writeup) return;
+
+            const modal = document.getElementById('writeup-modal');
+            const modalBody = document.getElementById('modal-body');
+
+            modalBody.innerHTML = `
+                <h2 style="color: var(--accent);">${writeup.title}</h2>
+                <p style="color: var(--text-dim); margin-bottom: 20px;">${writeup.date}</p>
+                <div style="margin-bottom: 20px;">
+                    ${writeup.tags.map(tag => `<span class="writeup-tag">${tag}</span>`).join('')}
+                </div>
+                <div class="writeup-full">
+                    ${writeup.content}
+                </div>
+            `;
+
+            modal.style.display = 'block';
+        }
+
+        function closeWriteup() {
+            document.getElementById('writeup-modal').style.display = 'none';
+        }
+
+        function filterWriteups(category) {
+            const cards = document.querySelectorAll('.writeup-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        window.onclick = function(e) {
+            const modal = document.getElementById('writeup-modal');
+            if (e.target === modal) {
+                closeWriteup();
+            }
+        }
+    </script>
+</body>
+</html>

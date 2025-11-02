@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WolfG4ng9 | Tools</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0e27;
+            --bg-card: #1a1f3a;
+            --accent: #00ff88;
+            --accent-secondary: #ff0055;
+            --text: #e0e0e0;
+            --text-dim: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-card) 100%);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .logo {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: var(--text-dim);
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid var(--accent);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
+            transform: translateY(-2px);
+        }
+
+        nav a.active {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .page-title {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-desc {
+            font-size: 1.2em;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            margin: 60px 0 30px 0;
+            color: var(--accent);
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: var(--accent-secondary);
+        }
+
+        .flaw-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .flaw-card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 25px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .flaw-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .flaw-card.active {
+            border-color: var(--accent);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .flaw-icon {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        .flaw-card h3 {
+            color: var(--text);
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .flaw-card p {
+            color: var(--text-dim);
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+
+        .flaw-tests {
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .flaw-tests h4 {
+            color: var(--accent);
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+
+        .flaw-tests ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .flaw-tests li {
+            color: var(--text);
+            font-size: 0.9em;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .flaw-tests li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-secondary);
+        }
+
+        .flaw-example {
+            background: var(--bg-dark);
+            border-radius: 5px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .flaw-example strong {
+            color: var(--accent);
+            font-size: 0.85em;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .flaw-example code {
+            color: var(--text-dim);
+            font-size: 0.85em;
+            word-break: break-all;
+        }
+
+        .tips-box {
+            background: rgba(255, 0, 85, 0.1);
+            border: 1px solid rgba(255, 0, 85, 0.3);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .tips-box h3 {
+            color: var(--accent-secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tips-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-box li {
+            color: var(--text);
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .tips-box li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent-secondary);
+            font-size: 1.5em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            color: var(--text-dim);
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2em;
+            }
+            
+            .page-title {
+                font-size: 2em;
+            }
+            
+            .flaw-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">WolfG4ng9</div>
+        <p class="tagline">Cybersecurity Researcher | CTF Player | Bug Hunter</p>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="writeups.html">Writeups</a>
+            <a href="insights.html">Insights</a>
+            <a href="tools.html" class="active">Tools</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Security Tools</h1>
+            <p class="page-desc">Interactive guides and resources to help you find vulnerabilities and solve CTF challenges.</p>
+        </div>
+
+        <h2 class="section-title">Broken Logic - Interactive Testing Guide</h2>
+        <p style="color: var(--text-dim); margin-bottom: 30px;">
+            Click on each vulnerability category to explore common logic flaws in web applications. 
+            Perfect for CTF challenges and bug hunting!
+        </p>
+        
+        <div class="flaw-grid">
+            <div class="flaw-card" onclick="toggleFlaw('price')">
+                <svg class="flaw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3h18v18H3zM12 8v8m-4-4h8"/>
+                </svg>
+                <h3>Price Manipulation</h3>
+                <p>Check if prices can be modified client-side</p>
+                <div class="flaw-tests" id="flaw-price">
+                    <h4>Tests to try:</h4>
+                    <ul>
+                        <li>Intercept checkout request and modify price to 0 or negative</li>
+                        <li>Change quantity to negative numbers</li>
+                        <li>Modify item prices in cart before checkout</li>
+                        <li>Use discount codes multiple times or stack them</li>
+                    </ul>
+                    <div class="flaw-example">
+                        <strong>Example:</strong>
+                        <code>POST /checkout {"total": 0, "items": [...]}</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flaw-card" onclick="toggleFlaw('cart')">
+                <svg class="flaw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                <h3>Cart Session Issues</h3>
+                <p>Manipulate cart session or user's cart</p>
+                <div class="flaw-tests" id="flaw-cart">
+                    <h4>Tests to try:</h4>
+                    <ul>
+                        <li>Access another user's cart by changing session/cart ID</li>
+                        <li>Add items to cart without authentication</li>
+                        <li>Checkout with empty cart but modified total</li>
+                        <li>Reuse old cart IDs or session tokens</li>
+                    </ul>
+                    <div class="flaw-example">
+                        <strong>Example:</strong>
+                        <code>Change cartId=123 to cartId=456 in requests</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flaw-card" onclick="toggleFlaw('auth')">
+                <svg class="flaw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                <h3>Authentication Bypass</h3>
+                <p>Access restricted features without proper auth</p>
+                <div class="flaw-tests" id="flaw-auth">
+                    <h4>Tests to try:</h4>
+                    <ul>
+                        <li>Access /checkout or /cart without being logged in</li>
+                        <li>Register with admin/special usernames</li>
+                        <li>SQL injection in login (admin'--)</li>
+                        <li>Check if JWT tokens can be manipulated</li>
+                    </ul>
+                    <div class="flaw-example">
+                        <strong>Example:</strong>
+                        <code>username: admin'-- password: anything</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flaw-card" onclick="toggleFlaw('idor')">
+                <svg class="flaw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <h3>IDOR Vulnerabilities</h3>
+                <p>Access other users' data via ID manipulation</p>
+                <div class="flaw-tests" id="flaw-idor">
+                    <h4>Tests to try:</h4>
+                    <ul>
+                        <li>Change user_id in profile/order requests</li>
+                        <li>Access /api/orders/1, /api/orders/2, etc.</li>
+                        <li>Modify order_id in GET/POST requests</li>
+                        <li>View other users' order history</li>
+                    </ul>
+                    <div class="flaw-example">
+                        <strong>Example:</strong>
+                        <code>GET /api/user/2/orders (access user 2's orders)</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flaw-card" onclick="toggleFlaw('race')">
+                <svg class="flaw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                <h3>Race Conditions</h3>
+                <p>Exploit timing issues in cart/checkout</p>
+                <div class="flaw-tests" id="flaw-race">
+                    <h4>Tests to try:</h4>
+                    <ul>
+                        <li>Apply discount code multiple times simultaneously</li>
+                        <li>Checkout same cart twice in parallel requests</li>
+                        <li>Modify cart while checkout is processing</li>
+                        <li>Use stored credit multiple times</li>
+                    </ul>
+                    <div class="flaw-example">
+                        <strong>Example:</strong>
+                        <code>Send 10 parallel checkout requests with same cart</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flaw-card" onclick="toggleFlaw('quantity')">
+                <svg class="flaw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                <h3>Quantity Manipulation</h3>
+                <p>Exploit math in order calculations</p>
+                <div class="flaw-tests" id="flaw-quantity">
+                    <h4>Tests to try:</h4>
+                    <ul>
+                        <li>Set quantity to 0 but keep items in cart</li>
+                        <li>Use floating point for quantity (1.5 pizzas)</li>
+                        <li>Overflow total with huge numbers</li>
+                        <li>Integer overflow with max quantity values</li>
+                    </ul>
+                    <div class="flaw-example">
+                        <strong>Example:</strong>
+                        <code>POST {"item_id": 1, "quantity": 999999999}</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tips-box">
+            <h3>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                Pro Tips
+            </h3>
+            <ul>
+                <li>Use browser DevTools Network tab to inspect API requests</li>
+                <li>Try Burp Suite or OWASP ZAP to intercept and modify requests</li>
+                <li>Look for client-side price calculations or validation</li>
+                <li>Test SQL injection in all input fields (login, register, search)</li>
+                <li>Check if authorization is properly enforced on API endpoints</li>
+                <li>Look for sequential IDs that can be enumerated (orders, users, carts)</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 WolfG4ng9. Built with passion for security research.</p>
+    </footer>
+
+    <script>
+        function toggleFlaw(id) {
+            const element = document.getElementById('flaw-' + id);
+            const card = element.parentElement;
+            
+            if (element.style.display === 'none' || element.style.display === '') {
+                element.style.display = 'block';
+                card.classList.add('active');
+            } else {
+                element.style.display = 'none';
+                card.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
