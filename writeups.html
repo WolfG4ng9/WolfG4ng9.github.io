@@ -537,24 +537,6 @@ process_payment(total)</code></pre>
                         <li>Successfully executed without authorization! and had the flag</li>
                     </ol>
 
-//                     <h3>Exploitation</h3>
-//                     <p><strong>Method 1: Manual enumeration</strong></p>
-//                     <pre><code>GET /profile?user_id=1
-// GET /profile?user_id=2
-// GET /profile?user_id=3
-// ...</code></pre>
-
-                    <p><strong>Method : Automated with Burp Intruder</strong></p>
-                    <ul>
-                        <li>Captured the profile request in Burp Suite</li>
-                        <li>Set user_id as payload position</li>
-                        <li>Used number payload (1-1000)</li>
-                        <li>Launched attack to enumerate all user profiles</li>
-                    </ul>
-
-                    <h3>Finding the Flag</h3>
-                    <p>After enumerating through user IDs, I found an admin account (user_id=1) that contained the flag:</p>
-                    <pre><code>GET /profile?user_id=1
 
                     <h3>Root Cause</h3>
                     <p>The vulnerability existed because:</p>
@@ -573,25 +555,6 @@ process_payment(total)</code></pre>
                         <li>Enumerate valid user IDs</li>
                         <li>Potentially modify other users' data (if PUT/POST were vulnerable)</li>
                     </ul>
-
-//                     <h3>Remediation</h3>
-//                     <p><strong>Proper Implementation:</strong></p>
-//                     <pre><code>// Check if authenticated user has permission to access resource
-// function getProfile(requested_user_id) {
-//     current_user = get_authenticated_user();
-    
-//     // Authorization check
-//     if (current_user.id !== requested_user_id && !current_user.is_admin) {
-//         return "403 Forbidden - Access Denied";
-//     }
-    
-//     return database.get_user(requested_user_id);
-// }
-
-// // Or use indirect references
-// session.user_token = generate_random_token();
-// // Map token to user_id server-side
-// GET /profile (uses session token, not direct ID)</code></pre>
 
                     <h3>Key Takeaways</h3>
                     <ul>
@@ -620,6 +583,7 @@ process_payment(total)</code></pre>
                     </ul>
                 `
             }
+            
         };
 
         function toggleMenu() {
