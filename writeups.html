@@ -38,7 +38,22 @@
             padding: 60px 20px;
             background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-card) 100%);
             border-bottom: 2px solid var(--accent);
+            position: relative;
         }
+        .redacted-accessible {
+            position: relative;
+            color: transparent;   /* hide text */
+            background: none;
+            text-shadow: none;
+        }
+        .redacted-accessible::before {
+            content: "";
+            position: absolute;
+            top: 0; bottom: 0; left: 0; right: 0;
+            background: #000;
+            border-radius: 2px;
+        }
+
 
         .logo {
             font-size: 3em;
@@ -54,6 +69,37 @@
             color: var(--text-dim);
             font-size: 1.2em;
             margin-bottom: 20px;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 10px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--accent);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
         }
 
         nav {
@@ -269,18 +315,55 @@
                 grid-template-columns: 1fr;
             }
             
+            .hamburger {
+                display: flex;
+            }
+            
             nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                max-width: 300px;
+                height: 100vh;
+                background: var(--bg-card);
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
+                padding: 80px 30px 30px 30px;
+                gap: 0;
+                margin-top: 0;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            nav a {
+                width: 100%;
+                margin-bottom: 15px;
+                text-align: left;
+            }
+
+            .modal-content {
+                margin: 20px;
+                padding: 30px 20px;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo">WolfG4ng9</div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="logo">WolfG4ng9🐺</div>
         <p class="tagline">Security Researcher | CTF Player | Machine Learning</p>
-        <nav>
+        <nav id="nav">
             <a href="index.html">Home</a>
             <a href="writeups.html" class="active">Writeups</a>
             <a href="insights.html">Insights</a>
@@ -305,19 +388,25 @@
 
         <div class="writeups-grid" id="writeups-container">
             <div class="writeup-card" data-category="web" onclick="openWriteup('pizza-logic')">
-                <span class="writeup-tag">Web</span>
+                <span class="writeup-tag">Web (BugForge)</span>
                 <span class="writeup-tag">Logic Flaw</span>
                 <h3 class="writeup-title">Pizza Service - Broken Logic</h3>
                 <p class="writeup-desc">Exploiting client-side price manipulation in a pizza ordering application through request interception.</p>
                 <p class="writeup-date">November 2, 2025</p>
             </div>
 
-            <!-- Add more writeup cards here as you solve challenges -->
+            <div class="writeup-card" data-category="web" onclick="openWriteup('tanuki-idor')">
+                <span class="writeup-tag">Web (BugForge)</span>
+                <span class="writeup-tag">IDOR</span>
+                <h3 class="writeup-title">Tanuki - IDOR Vulnerability</h3>
+                <p class="writeup-desc">Exploiting an application that uses user supplied data to access objects directly.</p>
+                <p class="writeup-date">November 3, 2025</p>
+            </div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2025 WolfG4ng9. Built with passion for security research.</p>
+        <p>&copy; 2025 WolfG4ng9🐺. Built with passion for security research.</p>
     </footer>
 
     <!-- Modal for full writeup -->
@@ -418,8 +507,127 @@ process_payment(total)</code></pre>
                         <li>Browser DevTools - Initial reconnaissance</li>
                     </ul>
                 `
+            },
+
+            'tanuki-idor': {
+                title: 'Tanuki - IDOR (Insecure Direct Object Reference)',
+                tags: ['Web Security', 'IDOR', 'Access Control'],
+                date: 'November 3, 2025',
+                content: `
+                    <h3>Challenge Overview</h3>
+                    <p>Tanuki is a web application with user authentication, learning about linux with information displayed on decks, stats, profile and other tabs. The challenge involves exploiting improper access controls.</p>
+                    <p><strong>Hint:</strong> "IDOR - Insecure Direct Object Reference"</p>
+
+                    <h3>What is IDOR?</h3>
+                    <p>IDOR occurs when an application uses user-supplied input to access objects directly (like database records, files, or user profiles) without proper authorization checks. Attackers can modify parameters to access unauthorized data.</p>
+
+                    <h3>Reconnaissance</h3>
+                    <p>After registering an account/logging in I inspected the various api calls in the browser network tab, (Dev tools)</p>
+                    <p>This gave information on what endpoints the application calls. I started making intercepts with burpsuite and played around with some requests</p>
+                    <p>An endpoint that triggered my attention was /api/<span class="redacted-accessible">stats</span> endpoint </p>.
+                    <pre><code>GET /api/<span class="redacted-accessible">stats</span></code></pre>
+                    <p>This immediately suggested potential IDOR vulnerability.</p>
+
+                    <h3>Vulnerability Discovery</h3>
+                    <p><strong>Testing for IDOR:</strong></p>
+                    <ol>
+                        <li>Logged in with my account</li>
+                        <li>Made a couple of burp intercepts and requests</li>
+                        <li>Modified an interesting endpoint parameter to <code>1</code>, <code>2</code>, <code>100</code>, etc.</li>
+                        <li>Successfully executed without authorization! and had the flag</li>
+                    </ol>
+
+//                     <h3>Exploitation</h3>
+//                     <p><strong>Method 1: Manual enumeration</strong></p>
+//                     <pre><code>GET /profile?user_id=1
+// GET /profile?user_id=2
+// GET /profile?user_id=3
+// ...</code></pre>
+
+                    <p><strong>Method : Automated with Burp Intruder</strong></p>
+                    <ul>
+                        <li>Captured the profile request in Burp Suite</li>
+                        <li>Set user_id as payload position</li>
+                        <li>Used number payload (1-1000)</li>
+                        <li>Launched attack to enumerate all user profiles</li>
+                    </ul>
+
+                    <h3>Finding the Flag</h3>
+                    <p>After enumerating through user IDs, I found an admin account (user_id=1) that contained the flag:</p>
+                    <pre><code>GET /profile?user_id=1
+
+                    <h3>Root Cause</h3>
+                    <p>The vulnerability existed because:</p>
+                    <ul>
+                        <li>No authorization check to verify if requesting user can access the resource</li>
+                        <li>Direct use of user-supplied IDs without validation</li>
+                        <li>Predictable/sequential resource identifiers</li>
+                        <li>Missing access control enforcement at the application layer</li>
+                    </ul>
+
+                    <h3>Impact</h3>
+                    <p>An attacker could:</p>
+                    <ul>
+                        <li>View all user profiles and sensitive information</li>
+                        <li>Access admin accounts and elevated privileges</li>
+                        <li>Enumerate valid user IDs</li>
+                        <li>Potentially modify other users' data (if PUT/POST were vulnerable)</li>
+                    </ul>
+
+//                     <h3>Remediation</h3>
+//                     <p><strong>Proper Implementation:</strong></p>
+//                     <pre><code>// Check if authenticated user has permission to access resource
+// function getProfile(requested_user_id) {
+//     current_user = get_authenticated_user();
+    
+//     // Authorization check
+//     if (current_user.id !== requested_user_id && !current_user.is_admin) {
+//         return "403 Forbidden - Access Denied";
+//     }
+    
+//     return database.get_user(requested_user_id);
+// }
+
+// // Or use indirect references
+// session.user_token = generate_random_token();
+// // Map token to user_id server-side
+// GET /profile (uses session token, not direct ID)</code></pre>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Always implement proper authorization checks</li>
+                        <li>Don't rely on client-side access control</li>
+                        <li>Use indirect object references (random tokens/UUIDs instead of sequential IDs)</li>
+                        <li>Implement server-side access control for every request</li>
+                        <li>Follow the principle of least privilege</li>
+                        <li>Test all endpoints that accept object identifiers</li>
+                    </ul>
+
+                    <h3>IDOR Testing Checklist</h3>
+                    <ul>
+                        <li>Look for numeric IDs in URLs, cookies, or request bodies</li>
+                        <li>Try incrementing/decrementing IDs</li>
+                        <li>Test with different HTTP methods (GET, POST, PUT, DELETE)</li>
+                        <li>Check API endpoints like /api/user/{id}</li>
+                        <li>Test file access endpoints /download?file=doc1.pdf</li>
+                        <li>Look for UUIDs - though less predictable, still test authorization</li>
+                    </ul>
+
+                    <h3>Tools Used</h3>
+                    <ul>
+                        <li>Burp Suite - Request interception and Intruder for enumeration</li>
+                        <li>Browser DevTools - URL manipulation and response analysis</li>
+                    </ul>
+                `
             }
         };
+
+        function toggleMenu() {
+            const nav = document.getElementById('nav');
+            const hamburger = document.querySelector('.hamburger');
+            nav.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
 
         function openWriteup(id) {
             const writeup = writeups[id];
@@ -440,10 +648,12 @@ process_payment(total)</code></pre>
             `;
 
             modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
         function closeWriteup() {
             document.getElementById('writeup-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
         function filterWriteups(category) {
@@ -468,6 +678,19 @@ process_payment(total)</code></pre>
                 closeWriteup();
             }
         }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav');
+            const hamburger = document.querySelector('.hamburger');
+            
+            if (nav.classList.contains('active') && 
+                !nav.contains(event.target) && 
+                !hamburger.contains(event.target)) {
+                nav.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
